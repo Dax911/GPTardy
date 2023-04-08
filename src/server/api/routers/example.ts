@@ -46,8 +46,8 @@ type OpenAIResponse = {
 
 const fetchNewCategory = async (text: string): Promise<Category> => {
   const buildPrompt = (text: string): string => {
-    return `Create a new category of questions and answers. Build the category based on the following phrase "${text}". Be sure to return the jeopardy style response in json format. Be sure that the higher value questions are more difficult than the lower values. Like so:
-    [
+    return `Create a new category of questions and answers. Build the category based on the following phrase "${text}". Be sure to return the jeopardy style response in json format that uses only regular expressions. Be sure that the higher value questions are more difficult than the lower values. Like so:
+    
     {
       "catTitle": "Category Title",
       "catData": [
@@ -58,7 +58,7 @@ const fetchNewCategory = async (text: string): Promise<Category> => {
         { "value": 500, "question": "Question 5 is", "answer": "What is Answer 5" },
       ]
     }
-  ]`
+  `
     ;
   };
 
