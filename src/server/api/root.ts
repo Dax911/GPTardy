@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "y/server/api/trpc";
-import { exampleRouter } from "y/server/api/routers/example";
+import { exampleRouter, chatGPTRouter } from "y/server/api/routers/example";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +8,7 @@ import { exampleRouter } from "y/server/api/routers/example";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  chatGPT: chatGPTRouter,
 });
 
 // export type definition of API
