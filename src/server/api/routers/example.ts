@@ -47,16 +47,18 @@ type OpenAIResponse = {
 const fetchNewCategory = async (text: string): Promise<Category> => {
   const buildPrompt = (text: string): string => {
     return `Create a new category of questions and answers. Build the category based on the following phrase "${text}". Be sure to return the jeopardy style response in json format. Be sure that the higher value questions are more difficult than the lower values. Like so:
+    [
     {
-      catTitle: 'Category Title',
-      catData: [
-        { value: 100, question: 'Question 1 is', answer: 'What is Answer 1' },
-        { value: 200, question: 'Question 2 is', answer: 'What is Answer 2' },
-        { value: 300, question: 'Question 3 is', answer: 'What is Answer 3' },
-        { value: 400, question: 'Question 4 is', answer: 'What is Answer 4' },
-        { value: 500, question: 'Question 5 is', answer: 'What is Answer 5' },
+      "catTitle": "Category Title",
+      "catData": [
+        { "value": 100, "question": "Question 1 is", "answer": "What is Answer 1" },
+        { "value": 200, "question": "Question 2 is", "answer": "What is Answer 2" },
+        { "value": 300, "question": "Question 3 is", "answer": "What is Answer 3" },
+        { "value": 400, "question": "Question 4 is", "answer": "What is Answer 4" },
+        { "value": 500, "question": "Question 5 is", "answer": "What is Answer 5" },
       ]
-    },`
+    }
+  ]`
     ;
   };
 
@@ -79,10 +81,13 @@ const fetchNewCategory = async (text: string): Promise<Category> => {
   
   console.log('BREAK ~~~~~~~~~~~~~~~~~~~~');
 
-  const data: Category = response.data.choices[0]?.text;
+  const data = response.data.choices[0]?.text;
   console.log(data, '\nBREAK');
 
-  return data;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const returnData: Category = JSON.parse(data);
+
+  return returnData;
 };
 
 

@@ -25,9 +25,10 @@ function Jeopardy() {
         getNewCategoryData.mutate({ text });
         console.log(getNewCategoryData.data);
 
-        const newCategory = getNewCategoryData.data;
-
-        setCurrentCategories(newCategory);
+        if (getNewCategoryData.data) {
+            const newCategory = getNewCategoryData.data;
+            setCurrentCategories([newCategory]);
+        }
 
       };
 
