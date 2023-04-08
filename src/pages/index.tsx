@@ -9,9 +9,11 @@ import Jeopardy from "y/components/jeopardy";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const getNewCategory = api.chatGPT.getNewCategory.useQuery({ text: "LGBTQ+ History" });
+  //const getNewCategory = api.chatGPT.getNewCategory.useMutation({ text: "LGBTQ+ History" });
 
+  //const castResponseToString =  JSON.stringify(getNewCategory);
   
+
 
   return (
     <>
@@ -31,7 +33,7 @@ const Home: NextPage = () => {
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
             <p className="text-2xl text-white">
-              {getNewCategory.data ? getNewCategory.data : "Loading GPT query..."}
+              { "Loading GPT query..."}
             </p>
             
             <AuthShowcase />

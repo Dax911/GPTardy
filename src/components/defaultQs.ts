@@ -1,7 +1,7 @@
 export const categories = [
     {
-      title: 'LGBTQ+ History',
-      questions: [
+      catTitle: 'LGBTQ+ History',
+      catData: [
         { value: 100, question: 'This 1969 event is often cited as the beginning of the modern LGBTQ+ rights movement.', answer: 'What is the Stonewall Uprising?' },
         { value: 200, question: 'This artist created the iconic rainbow flag as a symbol of LGBTQ+ pride.', answer: 'Who is Gilbert Baker?' },
         { value: 300, question: 'This openly gay politician became the first elected official in California to publicly announce his HIV-positive status.', answer: 'Who is Tom Ammiano?' },
@@ -9,6 +9,8 @@ export const categories = [
         { value: 500, question: 'This Supreme Court case, decided in 2015, legalized same-sex marriage in the United States.', answer: 'What is Obergefell v. Hodges?' },
       ]
     },
+  ];
+  /*
     {
         title: 'Famous LGBTQ+ Figures',
         questions: [
@@ -50,4 +52,4 @@ export const categories = [
         ]
       }
     ]
-    
+    */

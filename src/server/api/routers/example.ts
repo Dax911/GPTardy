@@ -23,32 +23,33 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 // Define expected response type
-type NewCategoryResponse = {
-  text?: object;
-};
 
-// Validation schema for response data
-const newCategoryResponseSchema = z.object({
-  text: z.any(),
-});
-
-interface TriviaCategory {
-  title: string;
-  questions: {
+type Category = {
+  catTitle: string;
+  catData: {
     value: number;
     question: string;
     answer: string;
   }[];
-}
+};
 
-//Create a new category of questions and answers. Build the category based on the following phrase "${text}". Be sure to return the response in json format.
+type OpenAIResponse = {
+  data: {
+    choices: {
+      text: Category | undefined;
+      index: number;
+      logprobs: number | null;
+      finish_reason: string;
+    }[];
+  };
+};
 
-const fetchNewCategory = async (text: string): Promise<NewCategoryResponse> => {
-  const buildPromt = (text: string) => {
+const fetchNewCategory = async (text: string): Promise<Category> => {
+  const buildPrompt = (text: string): string => {
     return `Create a new category of questions and answers. Build the category based on the following phrase "${text}". Be sure to return the jeopardy style response in json format. Be sure that the higher value questions are more difficult than the lower values. Like so:
     {
-      title: 'Category Title',
-      questions: [
+      catTitle: 'Category Title',
+      catData: [
         { value: 100, question: 'Question 1 is', answer: 'What is Answer 1' },
         { value: 200, question: 'Question 2 is', answer: 'What is Answer 2' },
         { value: 300, question: 'Question 3 is', answer: 'What is Answer 3' },
@@ -59,13 +60,13 @@ const fetchNewCategory = async (text: string): Promise<NewCategoryResponse> => {
     ;
   };
 
-  console.log(buildPromt(text));
+  console.log(buildPrompt(text));
 
-  console.log('++++++ BREAK AFTER BUILB PROMPT ++++++++');
+  console.log('++++++ BREAK AFTER BUILD PROMPT ++++++++');
 
-  const response = await openai.createCompletion({
+  const response: OpenAIResponse = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: buildPromt(text),
+    prompt: buildPrompt(text),
     max_tokens: 2000,
     temperature: 0.9,
     top_p: 1,
@@ -76,27 +77,27 @@ const fetchNewCategory = async (text: string): Promise<NewCategoryResponse> => {
     stream: false,
   });
   
-  //console.log(response);
-  console.log(response.data);
-  console.log('BREAK');
-  console.log(response.data.choices);
   console.log('BREAK ~~~~~~~~~~~~~~~~~~~~');
 
-
-  const data = newCategoryResponseSchema.parse({
-    text: response.data.choices[0]?.text,
-  });
+  const data: Category = response.data.choices[0]?.text;
+  console.log(data, '\nBREAK');
 
   return data;
 };
 
+
 export const chatGPTRouter = createTRPCRouter({
   getNewCategory: publicProcedure
   .input(z.object({ text: z.string() }))
-  .query(async ({ input }) => {
+  .mutation(async ({ input }) => {
     const response = await fetchNewCategory(input.text);
-    console.log(response);
-    return JSON.stringify(response);
+
+    const category: Category = {
+      catTitle: response.catTitle,
+      catData: response.catData,
+    };
+
+    return category;
   }),
   
 });
